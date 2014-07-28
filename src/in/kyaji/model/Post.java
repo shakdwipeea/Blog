@@ -6,8 +6,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mongodb.*;
 import com.mongodb.MongoClient;
+import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSInputFile;
+import sun.misc.IOUtils;
 
-import java.io.InputStream;
+
+import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -115,7 +119,17 @@ public class Post {
 
     public String addImage(String title,InputStream image) {
         try {
+            String fileName = title;
 
+            boolean headsUp = init();
+            if (headsUp) {
+                GridFS gridFS = new GridFS(db);
+                GridFSInputFile gridFSInputFile = gridFS.createFile(image);
+
+                gridFSInputFile.setFilename(title);
+
+                gridFSInputFile.save();
+            }
 
 
         } catch (Exception e) {
