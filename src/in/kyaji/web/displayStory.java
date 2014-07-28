@@ -10,12 +10,16 @@ import java.util.ArrayList;
 public class displayStory {
     private ArrayList story = null;
 
-    public ArrayList getStory () {
+    public ArrayList getStory(int i) {
         Post post = new Post();
         try {
-            story = post.get();
+            story = post.get(i);
         }catch (Exception e) {
             System.out.print(e);
+        }
+
+        if (i == 1) {
+
         }
 
         return story;
