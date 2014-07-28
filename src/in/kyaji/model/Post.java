@@ -1,12 +1,17 @@
 package in.kyaji.model;
 
-
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mongodb.*;
+import com.mongodb.MongoClient;
 
 import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -32,7 +37,7 @@ public class Post {
 
             return true;
         }catch (Exception e) {
-            System.out.println(e);
+            System.out.println("The error is " + e.getMessage());
             return false;
         }
     }
@@ -45,7 +50,7 @@ public class Post {
             if (goAhead) {
                 basicDBObject.put("title",title);
                 basicDBObject.put("body",body);
-                basicDBObject.put("createdDate",date);
+                basicDBObject.put("createdDate",new Date());
                 dbCollection.insert(basicDBObject);
                 return "New Story added";
             } else {
@@ -59,16 +64,40 @@ public class Post {
     }
 
     public ArrayList get(int flag) throws  Exception {
-        ArrayList answer = null;
+        ArrayList answer = new ArrayList();
+        ArrayList ids = null;
+        String result = null;
+       String [] title = null;
+        String [] story = null;
         try {
             // for blog stories
             if (flag == 0) {
-                if (init()) {
+                boolean headsUp = init();
+                if (headsUp) {
+                    BasicDBObject searchQuery = new BasicDBObject();
+                    searchQuery.put("title","second");
                     DBCursor dbCursor = dbCollection.find();
-
+                    //System.out.println("from dbcursor" + dbCursor.toString());
                     while (dbCursor.hasNext()) {
-                        answer.add(dbCursor.next());
+                        //result = dbCursor.next().toString();
+                        DBObject dbObject = dbCursor.next();
+                       System.out.println("Title:" + dbObject.get("title"));
+                        try {
+                            answer.add(dbObject.get("title").toString());
+                            answer.add(dbObject.get("body").toString());
+                            Date date = (Date) dbObject.get("createdDate");
+                            answer.add(date);
+                        }catch (NullPointerException e) {
+                            System.out.println("Phir wahi error");
+
+                        }
+                        System.out.println("Here" + dbObject);
+                        //JsonParser jsonParser = new JsonParser();
+                       // JsonObject jsonObject = (JsonObject) jsonParser.parse(result);
+                       // answer.add(jsonObject.get("title"));
+                       // answer.add(jsonObject.get("body"));
                     }
+
 
                 } else {
                     System.out.println("Could not connect to databse");
@@ -76,16 +105,13 @@ public class Post {
             }
 
         } catch (Exception e) {
-             System.out.print(e);
+             e.printStackTrace();
         }
-
+        System.out.println(answer);
         return answer;
     }
 
-    private ArrayList writeResultSet(ResultSet resultSet,int flag) throws SQLException {
 
-        return stories;
-    }
 
     public String addImage(String title,InputStream image) {
         try {
@@ -96,7 +122,7 @@ public class Post {
             e.printStackTrace();
             return e.getMessage();
         }
-
+        return "hello";
     }
 
 

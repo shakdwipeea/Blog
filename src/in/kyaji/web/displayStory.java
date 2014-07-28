@@ -11,17 +11,14 @@ public class displayStory {
     private ArrayList story = null;
 
     public ArrayList getStory(int i) {
+        System.out.println("Funciton called");
         Post post = new Post();
         try {
             story = post.get(i);
         }catch (Exception e) {
-            System.out.print(e);
+            System.out.print("The error is in getstoiry" +e.getMessage());
         }
-
-        if (i == 1) {
-
-        }
-
+        System.out.println("in getStory");
         return story;
     }
 }

@@ -23,38 +23,23 @@
             <%
                 displayStory d = new displayStory();
                 ArrayList a = d.getStory(0);
+                //out.print("a");
                 Iterator iterator = a.iterator();
                 int i = 0;
                 while (iterator.hasNext()) {
 
-                    out.print("<br> Sno: " + iterator.next());
+                    out.print("<br /><br />");
                     out.print(" Title: " + iterator.next());
+                    out.print("<br />");
                     out.print(" Story: " + iterator.next());
+                    out.print("<br />");
                     out.print("Date: " + iterator.next());
+                    out.print("<br /><br />");
                 }
             %>
         </div>
 
         <div id="containerImage">
-            <%
-                displayStory d1 = new displayStory();
-                ArrayList a1 = d1.getStory(1);
-                Iterator iterator1 = a1.iterator();
-                int i1 = 0;
-                while (iterator1.hasNext()) {
-
-                    out.print("<br> Sno: " + iterator1.next());
-                    out.print(" Title: " + iterator1.next());
-                    //out.print(" Image " + iterator1.next());
-                    %>
-            <img src="<%=iterator1.next() %>" alt=""/>
-            
-            <%
-                    //String b = iterator1.next();
-
-
-                }
-            %>
 
         </div>
 
